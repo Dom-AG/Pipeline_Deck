@@ -52,14 +52,14 @@ export function TimelineChart({ phases, totalUnits, unitLabel = "Month", title }
           {phases.map((phase, idx) => (
             <div key={idx} className="relative h-10 px-1">
               <div
-                className="absolute h-8 rounded flex items-center px-3 group cursor-default"
+                className="absolute h-8 rounded flex items-center px-3 group cursor-default border-2 bg-transparent"
                 style={{
                   left: `${phase.start * unitWidth}%`,
                   width: `${phase.duration * unitWidth}%`,
-                  backgroundColor: phase.color || 'hsl(var(--primary))',
+                  borderColor: phase.color || 'hsl(var(--border))',
                 }}
               >
-                <span className="text-xs font-semibold text-background truncate">
+                <span className="text-xs font-semibold text-foreground truncate">
                   {phase.label}
                 </span>
                 <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">

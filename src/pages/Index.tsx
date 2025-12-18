@@ -12,8 +12,14 @@ import {
   RiskMatrix,
   GanttChart,
   TimelineChart,
+  SectionHeading,
 } from "@/components/deck";
 import { Code, Globe, Users, Box, Monitor, Layers, Cpu, ChevronUp, Timer, Grid, Download, GitBranch, Palette, Shield, Zap, Target, Lightbulb } from "lucide-react";
+import { activeTheme } from "@/config";
+import { content } from "@/config/content";
+import { getChartColor } from "@/lib/theme-helpers";
+// import { useInfinitePanels } from "@/hooks/use-infinite-panels"; // Disabled - using natural scroll
+// import { useScrollSmoother } from "@/hooks/use-scroll-smoother"; // Disabled - ScrollSmoother is premium plugin
 
 // Import images
 import gsgLibrary from "@/assets/gsg-library.png";
@@ -111,42 +117,32 @@ const ganttTasks = [
 const Index = () => {
   return (
     <DeckProvider items={navItems}>
-      <div className="min-h-screen bg-background">
-        <Navigation items={navItems} />
+      {/* Navbar - Fixed layer */}
+      <Navigation items={navItems} />
       
-      {/* Title Slide */}
-      <SlideSection id="title" className="pt-16">
-        <TitleSlide
-          title="Pipeline Blueprint"
-          subtitle="A comprehensive roadmap for implementing an AI assisted and USD-centric studio pipeline for a growing London team"
-        />
-      </SlideSection>
+      {/* Main content container */}
+      <main className="panels-container" style={{ position: 'relative' }}>
+            {/* Title Slide */}
+            <SlideSection id="title">
+              <TitleSlide
+                title={content.title.title}
+                subtitle={content.title.subtitle}
+              />
+            </SlideSection>
 
-      {/* Studio Structure */}
-      <SlideSection id="structure">
-        <FeatureColumns
-          heading="Studio structure"
-          subheading="Current state of the team"
-          features={[
-            {
-              icon: <Code className="w-6 h-6" />,
-              title: "Advanced pipeline Vision",
-              description: "AI augmented USD-centric workflow focused on efficiency. Houdini serves as the primary DCC tool, creating a foundation for sophisticated production capabilities.",
-            },
-            {
-              icon: <Globe className="w-6 h-6" />,
-              title: "Remote collaboration model",
-              description: "Distributed team structure enables access to diverse talent across locations. Core pipeline architecture and optimization strategies are maintained while scaling from small projects to Film and TV standard production requirements.",
-            },
-            {
-              icon: <Users className="w-6 h-6" />,
-              title: "Diverse talent composition",
-              description: "Senior pipeline lead, comp artist/pipeline engineer, AI-focused CG artists, and a Houdini artist form the core team.",
-              subdescription: "Hiring plan: A mid-level pipeline developer role is being recruited at £40-50k/year.",
-            },
-          ]}
-        />
-      </SlideSection>
+            {/* Studio Structure */}
+            <SlideSection id="structure">
+              <FeatureColumns
+                heading={content.structure.heading}
+                subheading={content.structure.subheading}
+                features={content.structure.features.map((feature, idx) => ({
+                  icon: idx === 0 ? <Code className="w-6 h-6" /> : idx === 1 ? <Globe className="w-6 h-6" /> : <Users className="w-6 h-6" />,
+                  title: feature.title,
+                  description: feature.description,
+                  subdescription: feature.subdescription,
+                }))}
+              />
+            </SlideSection>
 
       {/* VFX Studio Technical Roles */}
       <SlideSection id="roles">
@@ -184,34 +180,40 @@ const Index = () => {
         />
       </SlideSection>
 
-      {/* Responsibility Matrix */}
-      <SlideSection id="responsibility">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="space-y-6">
-            <h2 className="text-5xl md:text-6xl font-semibold tracking-tight text-foreground">
-              Responsibility Matrix
-            </h2>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li><span className="text-foreground font-medium">Lead/TD:</span> 40% technical direction/mentoring, 30% strategic planning, 30% complex problem-solving/troubleshooting</li>
-              <li><span className="text-foreground font-medium">Pipeline Developer:</span> 60% feature/system work, 25% maintenance/refactoring, 15% support/collab</li>
-              <li><span className="text-foreground font-medium">Junior Engineer:</span> 70% bugfix/support, 20% new feature assisting, 10% onboarding/training</li>
-              <li><span className="text-foreground font-medium">IT Specialist:</span> 80% infrastructure, 10% deployment/collab, 10% security/backup</li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <DeckTable
-              columns={[
-                { key: "task", header: "Task/Project" },
-                { key: "lead", header: "Pipeline Lead/TD" },
-                { key: "dev", header: "Pipeline Developer" },
-                { key: "junior", header: "Junior Engineer" },
-                { key: "it", header: "IT Specialist" },
-              ]}
-              data={responsibilityData}
-            />
-          </div>
-        </div>
-      </SlideSection>
+            {/* Responsibility Matrix */}
+            <SlideSection id="responsibility">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div className="space-y-6">
+                  <SectionHeading 
+                    text={content.responsibility.heading}
+                    size="xl"
+                  />
+                  <ul className="space-y-4 text-sm text-muted-foreground">
+                    {content.responsibility.summary.map((item, idx) => {
+                      const [role, ...descriptionParts] = item.split(':');
+                      const description = descriptionParts.join(':');
+                      return (
+                        <li key={idx}>
+                          <span className="text-foreground font-medium">{role}:</span> {description}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div className="lg:col-span-2">
+                  <DeckTable
+                    columns={[
+                      { key: "task", header: "Task/Project" },
+                      { key: "lead", header: "Pipeline Lead/TD" },
+                      { key: "dev", header: "Pipeline Developer" },
+                      { key: "junior", header: "Junior Engineer" },
+                      { key: "it", header: "IT Specialist" },
+                    ]}
+                    data={responsibilityData}
+                  />
+                </div>
+              </div>
+            </SlideSection>
 
       {/* What Modern Pipeline Should Include */}
       <SlideSection id="pipeline">
@@ -268,16 +270,17 @@ const Index = () => {
         />
       </SlideSection>
 
-      {/* ACES Color Management */}
-      <SlideSection id="aces">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
-              ACES = USD for Editorial
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Fixes color inconsistencies across shots, assets, and departments.
-            </p>
+            {/* ACES Color Management */}
+            <SlideSection id="aces">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div className="space-y-4">
+                  <SectionHeading 
+                    text={content.aces.heading}
+                    size="lg"
+                  />
+                  <p className="text-lg text-muted-foreground">
+                    {content.aces.description}
+                  </p>
           </div>
           <div className="flex gap-4">
             <img src={acesDiagram} alt="ACES Chromaticity Diagram" className="rounded-lg w-full max-w-md" />
@@ -350,16 +353,18 @@ const Index = () => {
         </div>
       </SlideSection>
 
-      {/* REZ Environment Management */}
-      <SlideSection id="rez">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground mb-6">
-              REZ: Automated Environment and Dependency Control
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              REZ: All artist and render farm machines use dynamically-resolved environments (software, plugins, versions) so "works on my machine" bugs are eliminated. Deployment and updates are frictionless.
-            </p>
+            {/* REZ Environment Management */}
+            <SlideSection id="rez">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <SectionHeading 
+                    text={content.rez.heading}
+                    size="lg"
+                    className="mb-6"
+                  />
+                  <p className="text-lg text-muted-foreground mb-8">
+                    {content.rez.description}
+                  </p>
           </div>
           <div>
             <img src={rezTerminal} alt="REZ Terminal" className="rounded-lg" />
@@ -442,11 +447,13 @@ const Index = () => {
         </div>
       </SlideSection>
 
-      {/* AI Integration */}
-      <SlideSection id="ai">
-        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground mb-4">
-          AI-assisted workflows in production reality
-        </h2>
+            {/* AI Integration */}
+            <SlideSection id="ai">
+              <SectionHeading 
+                text={content.ai.heading}
+                size="lg"
+                className="mb-4"
+              />
         <p className="text-lg text-muted-foreground mb-12 max-w-4xl">
           AI accelerates asset ideation and repetitive tasks but stays anchored to asset library and USD workflow. Artists iterate rapidly, but final output is always actual, rendered 3D assets—not direct AI "concepts" delivered to clients.
         </p>
@@ -471,14 +478,16 @@ const Index = () => {
         </div>
       </SlideSection>
 
-      {/* Timeline */}
-      <SlideSection id="timeline">
-        <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground mb-8">
-          8-Month Strategic Action Plan
-        </h2>
-        <p className="text-lg text-muted-foreground mb-12 max-w-4xl">
-          Strategic hiring, technical upgrades, and process standardization drive ROI, foster creative agility, and ensure assets and projects are easy to track, iterate, and deliver as the studio grows.
-        </p>
+            {/* Timeline */}
+            <SlideSection id="timeline">
+              <SectionHeading 
+                text={content.timeline.heading}
+                size="lg"
+                className="mb-8"
+              />
+              <p className="text-lg text-muted-foreground mb-12 max-w-4xl">
+                {content.timeline.description}
+              </p>
         
         <GanttChart tasks={ganttTasks} totalWeeks={32} />
         
@@ -500,13 +509,13 @@ const Index = () => {
         </div>
       </SlideSection>
 
-      {/* Footer */}
-      <div className="py-16 text-center border-t border-border">
-        <p className="text-sm text-muted-foreground">
-          Pipeline Blueprint 2025 • London VFX Studio
-        </p>
-      </div>
-      </div>
+        {/* Footer */}
+        <div className="py-16 text-center border-t border-border">
+          <p className="text-sm text-muted-foreground">
+            {content.footer.text}
+          </p>
+        </div>
+      </main>
     </DeckProvider>
   );
 };

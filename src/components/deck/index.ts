@@ -17,3 +17,4 @@ export { GanttChart } from "./GanttChart";
 export { FeatureColumns } from "./FeatureColumns";
 export { ImageGrid } from "./ImageGrid";
 export { DeckProvider } from "./DeckProvider";
+export { SectionHeading } from "./SectionHeading";

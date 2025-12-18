@@ -62,7 +62,7 @@ export function StackedBarChart({ data, height = 32 }: StackedBarChartProps) {
             <div key={idx} className="flex items-center gap-2">
               <div 
                 className="w-3 h-3 rounded-sm" 
-                style={{ backgroundColor: segment?.color || '#64748b' }}
+                style={{ backgroundColor: segment?.color || 'hsl(var(--muted-foreground))' }}
               />
               <span className="text-xs text-muted-foreground">{label}</span>
             </div>

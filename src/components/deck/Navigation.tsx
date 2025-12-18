@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Image as ImageIcon } from "lucide-react";
 import { useDeckOptional } from "./DeckProvider";
+import { useNavbarAnimation } from "@/hooks/use-navbar-animation";
 
 interface NavItem {
   id: string;
@@ -12,14 +12,22 @@ interface NavigationProps {
   items: NavItem[];
 }
 
+declare global {
+  interface Window {
+    gsap: any;
+    ScrollTrigger: any;
+    ScrollSmoother: any;
+  }
+}
+
 export function Navigation({ items }: NavigationProps) {
   const deck = useDeckOptional();
   const [activeSectionInternal, setActiveSectionInternal] = useState(items[0]?.id || "");
   const activeSection = deck?.activeSection ?? activeSectionInternal;
-  const setActiveSection = deck?.setActiveSection ?? setActiveSectionInternal;
-
-  const showReference = Boolean(deck?.showReference);
-  const toggleReference = deck?.toggleReference;
+  const setActiveSectionFn = typeof deck?.setActiveSection === 'function' 
+    ? deck.setActiveSection 
+    : setActiveSectionInternal;
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,7 +40,7 @@ export function Navigation({ items }: NavigationProps) {
         }
         if (!best) return;
         const id = best.target.id;
-        setActiveSection(id);
+        setActiveSectionFn(id);
         // keep hash in sync without triggering a jump
         try {
           history.replaceState(null, "", `#${id}`);
@@ -49,12 +57,27 @@ export function Navigation({ items }: NavigationProps) {
     });
 
     return () => observer.disconnect();
-  }, [items]);
+  }, [items, setActiveSectionFn]);
 
-  const scrollToSection = (id: string, behavior: ScrollBehavior = "smooth") => {
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior, block: "start" });
+      // Use ScrollSmoother if available, otherwise use standard scroll
+      const smoother = (window as any).ScrollSmoother?.get();
+      if (smoother) {
+        smoother.scrollTo(element, true, "top top");
+      } else {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
+  const scrollToTop = () => {
+    const smoother = (window as any).ScrollSmoother?.get();
+    if (smoother) {
+      smoother.scrollTo(0, true);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -64,46 +87,84 @@ export function Navigation({ items }: NavigationProps) {
     if (!items.some((it) => it.id === raw)) return;
     // allow initial layout to settle
     setTimeout(() => {
-      scrollToSection(raw, "auto");
-      setActiveSection(raw);
+      scrollToSection(raw);
+      setActiveSectionFn(raw);
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
+  // Use isolated navbar animation hook
+  useNavbarAnimation(navRef);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="max-w-[1200px] mx-auto px-6 py-3">
-        <div className="flex items-center justify-between gap-8 overflow-x-auto">
-          <span className="text-sm font-semibold text-primary shrink-0">Pipeline Blueprint</span>
+    <nav 
+      ref={navRef}
+      className="main-tool-bar fixed top-0 left-0 right-0 z-50"
+      style={{
+        height: '80px',
+        background: 'linear-gradient(144.02deg, #00bae2 4.56%, #fec5fb 72.98%)',
+        color: '#0e100f',
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        left: 0,
+        top: 0,
+        transition: 'ease 0.4s',
+        willChange: 'transform',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 300,
+        position: 'relative',
+      }}
+    >
+      {/* Noise texture overlay */}
+      <div 
+        style={{
+          content: '',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundBlendMode: 'color-dodge',
+          backgroundImage: 'url(/src/assets/noise.webp)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 200px',
+          pointerEvents: 'none',
+          zIndex: 1,
+          opacity: 0.8,
+        }}
+      />
+      <div className="max-w-[1200px] mx-auto px-6 w-full" style={{ position: 'relative', zIndex: 2 }}>
+        <div className="flex items-center justify-between gap-8">
+          <button
+            onClick={scrollToTop}
+            className="text-sm font-semibold text-[#0e100f] hover:opacity-80 transition-opacity cursor-pointer shrink-0"
+            style={{ fontWeight: 400 }}
+          >
+            Pipeline Blueprint
+          </button>
           <div className="flex items-center gap-6">
             {items.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={cn(
-                  "nav-link whitespace-nowrap",
-                  activeSection === item.id && "nav-link-active"
+                  "text-sm text-[#0e100f] hover:opacity-80 transition-opacity whitespace-nowrap relative",
+                  activeSection === item.id && "font-semibold"
                 )}
+                style={{ fontWeight: activeSection === item.id ? 400 : 300 }}
               >
                 {item.label}
+                {activeSection === item.id && (
+                  <span 
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0e100f] -mb-2" 
+                    style={{ height: '2px' }}
+                  />
+                )}
               </button>
             ))}
-            {toggleReference && (
-              <button
-                onClick={toggleReference}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md border border-border transition-colors whitespace-nowrap",
-                  showReference
-                    ? "bg-muted/40 text-foreground hover:bg-muted/50"
-                    : "bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/20"
-                )}
-                title="Toggle reference overlay (R)"
-                type="button"
-              >
-                <ImageIcon className="w-4 h-4" />
-                Ref
-              </button>
-            )}
           </div>
         </div>
       </div>
