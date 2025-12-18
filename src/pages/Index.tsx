@@ -16,6 +16,7 @@ import {
   MatrixTable,
   ImageComparison,
   LauncherMockup,
+  QualityInvestmentChart,
 } from "@/components/deck";
 import { Code, Globe, Users, Box, Monitor, Layers, Cpu, ChevronUp, Timer, Grid, Download, GitBranch, Palette, Shield, Zap, Target, Lightbulb, CheckCircle2, XCircle, TrendingUp, TrendingDown, Brain, AlertTriangle, Rocket, BarChart3, Users2, Wrench } from "lucide-react";
 import { activeTheme } from "@/config";
@@ -347,6 +348,10 @@ const Index = () => {
             <h3 className="text-2xl font-semibold text-foreground">
               {content.disruption.qualityVsInvestment.heading}
             </h3>
+            
+            {/* Quality vs Investment Chart */}
+            <QualityInvestmentChart height={300} />
+            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {content.disruption.qualityVsInvestment.paths.map((path, idx) => {
                 const icons = [XCircle, BarChart3, CheckCircle2];

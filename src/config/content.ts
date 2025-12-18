@@ -156,9 +156,7 @@ export const content = {
           {
             title: "Pipeline Infrastructure as Competitive Advantage",
             description: "Build systems that control AI tools, not compete with them.",
-            benefits: [
-              "Your defensible position: orchestration, not execution",
-            ],
+            benefits: [],
           },
         ],
       },
