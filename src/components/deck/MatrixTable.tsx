@@ -1,55 +1,106 @@
-interface MatrixCell {
-  value: string | boolean;
+import { cn } from "@/lib/utils";
+
+interface TableColumn {
+  key: string;
+  header: string;
+  width?: string;
 }
 
 interface MatrixTableProps {
-  title?: string;
-  rowHeaders: string[];
-  columnHeaders: string[];
-  data: MatrixCell[][];
+  columns: TableColumn[];
+  data: Record<string, string | number | React.ReactNode>[];
+  caption?: string;
+  variant?: "default" | "dark"; // "dark" for dark background with light text
+  showVerticalBorders?: boolean; // Show vertical separators between columns
+  cellHover?: boolean; // Highlight individual cells on hover (instead of rows)
+  className?: string;
 }
 
-export function MatrixTable({ title, rowHeaders, columnHeaders, data }: MatrixTableProps) {
-  const renderCell = (cell: MatrixCell) => {
-    if (typeof cell.value === "boolean") {
-      return cell.value ? (
-        <span className="text-primary">✓</span>
-      ) : (
-        <span className="text-muted-foreground">–</span>
-      );
-    }
-    return cell.value;
-  };
-
+export function MatrixTable({
+  columns,
+  data,
+  caption,
+  variant = "default",
+  showVerticalBorders = false,
+  cellHover = false,
+  className,
+}: MatrixTableProps) {
   return (
-    <div className="w-full">
-      {title && (
-        <h3 className="text-lg font-semibold text-foreground mb-4">{title}</h3>
+    <div className={cn("w-full overflow-x-auto", className)}>
+      {caption && (
+        <p className="text-sm text-muted-foreground mb-4">{caption}</p>
       )}
-      <div className="overflow-x-auto">
-        <table className="deck-table">
-          <thead>
-            <tr>
-              <th></th>
-              {columnHeaders.map((header, idx) => (
-                <th key={idx} className="text-center">{header}</th>
+      <table
+        className={cn(
+          "deck-table w-full border-collapse rounded-lg overflow-hidden",
+          variant === "dark" && "matrix-dark",
+          showVerticalBorders && "matrix-borders",
+          cellHover && "matrix-cell-hover"
+        )}
+        style={
+          variant === "dark"
+            ? {
+                backgroundColor: "#0e100f",
+                borderRadius: "0.5rem",
+                padding: "1rem",
+              }
+            : undefined
+        }
+      >
+        <thead>
+          <tr>
+            {columns.map((col) => (
+              <th
+                key={col.key}
+                style={{
+                  width: col.width,
+                  ...(variant === "dark"
+                    ? {
+                        backgroundColor: "rgba(14, 16, 15, 0.8)",
+                        color: "hsl(var(--text-on-dark-heading))",
+                      }
+                    : {}),
+                  ...(showVerticalBorders
+                    ? { borderRight: "1px solid rgba(255, 255, 255, 0.1)" }
+                    : {}),
+                }}
+                className={cn(
+                  showVerticalBorders && "matrix-border-right"
+                )}
+              >
+                {col.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, idx) => (
+            <tr key={idx}>
+              {columns.map((col) => (
+                <td
+                  key={col.key}
+                  style={{
+                    ...(variant === "dark"
+                      ? {
+                          color: "hsl(var(--text-on-dark-paragraph))",
+                        }
+                      : {}),
+                    ...(showVerticalBorders
+                      ? { borderRight: "1px solid rgba(255, 255, 255, 0.1)" }
+                      : {}),
+                  }}
+                  className={cn(
+                    showVerticalBorders && "matrix-border-right",
+                    cellHover && "matrix-cell-hover-cell"
+                  )}
+                >
+                  {row[col.key]}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {rowHeaders.map((rowHeader, rowIdx) => (
-              <tr key={rowIdx}>
-                <td className="font-semibold text-foreground">{rowHeader}</td>
-                {data[rowIdx]?.map((cell, colIdx) => (
-                  <td key={colIdx} className="text-center">
-                    {renderCell(cell)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

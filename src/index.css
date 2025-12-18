@@ -142,6 +142,8 @@
   padding-top: 5rem; /* Space for fixed navbar */
   padding-bottom: 5rem; /* Bottom padding for spacing */
   /* Solid backgrounds applied via ID selectors below */
+  /* Background stays static - only content animates */
+  transform: none !important; /* Ensure section background never moves */
 }
 
 /* Title section - special styling */
@@ -162,9 +164,9 @@
 /* GRADIENT BACKGROUNDS FOR SECTIONS */
 /* Using CSS equivalents of SVG linear gradients */
 
-/* Structure (1st after title) - Pink to Blue gradient */
+/* Structure (1st after title) - Warm grey to cool grey gradient */
 #structure {
-  background: linear-gradient(135deg, #fec5fb 20%, #00bae2 80%);
+  background: linear-gradient(135deg, #8b7d6b 20%, #6b6b7d 80%); /* Warm grey to cool grey */
 }
 
 /* Roles (2nd) - dark */
@@ -178,23 +180,18 @@
 }
 
 /* Pipeline (4th) - dark */
-#pipeline {
-  background-color: #0e100f;
-}
+/* Pipeline section removed */
 
-/* USD (5th) - Pink to Blue gradient (alternate angle) */
-#usd {
-  background: linear-gradient(200deg, #fec5fb 27%, #00bae2 84%);
-}
+/* USD section removed - merged into Assets section */
 
 /* Assets (6th) - dark */
 #assets {
   background-color: #0e100f;
 }
 
-/* ACES (7th) - Orange to Pink gradient */
+/* ACES (7th) - Warm grey to cool grey gradient */
 #aces {
-  background: linear-gradient(135deg, rgb(255, 135, 9) 20%, rgb(247, 189, 248) 70%);
+  background: linear-gradient(135deg, #8b7d6b 20%, #6b6b7d 80%); /* Warm grey to cool grey */
 }
 
 /* REZ (8th) - dark */
@@ -202,9 +199,9 @@
   background-color: #0e100f;
 }
 
-/* Render (9th) - Orange to Pink gradient (reverse) */
+/* Infrastructure (9th) - Warm grey to cool grey gradient */
 #render {
-  background: linear-gradient(315deg, rgb(255, 135, 9) 20%, rgb(247, 189, 248) 70%);
+  background: linear-gradient(135deg, #8b7d6b 20%, #6b6b7d 80%); /* Warm grey to cool grey */
 }
 
 /* AI (10th) - dark */
@@ -212,9 +209,14 @@
   background-color: #0e100f;
 }
 
-/* Timeline (11th) - Pink to Blue gradient (diagonal) */
+/* Disruption - Warm grey to cool grey gradient */
+#disruption {
+  background: linear-gradient(135deg, #8b7d6b 20%, #6b6b7d 80%); /* Warm grey to cool grey */
+}
+
+/* Timeline (11th) - Warm grey to cool grey gradient */
 #timeline {
-  background: linear-gradient(160deg, #fec5fb 20%, #00bae2 80%);
+  background: linear-gradient(135deg, #8b7d6b 20%, #6b6b7d 80%); /* Warm grey to cool grey */
 }
 
 /* NOISE TEXTURE OVERLAY FOR COLORED SECTIONS */
@@ -222,9 +224,9 @@
 
 #structure,
 #responsibility,
-#usd,
 #aces,
 #render,
+#disruption,
 #timeline {
   position: relative;
   overflow: hidden;
@@ -232,9 +234,9 @@
 
 #structure::after,
 #responsibility::after,
-#usd::after,
 #aces::after,
 #render::after,
+#disruption::after,
 #timeline::after {
   content: '';
   position: absolute;
@@ -245,18 +247,20 @@
   background-blend-mode: color-dodge;
   background-image: url('/src/assets/noise.webp');
   background-repeat: repeat;
-  background-size: 200px 200px;
+  background-size: 100px 100px; /* Smaller size = more visible noise */
   pointer-events: none; /* Allow clicks through the overlay */
   z-index: 1;
-  opacity: 0.8; /* Increased from 0.5 for stronger effect */
+  opacity: 1.0; /* Maximum opacity for pronounced effect */
 }
+
+/* All sections now have pronounced noise via the main rule above */
 
 /* Ensure content is above the noise overlay */
 #structure .slide-content,
 #responsibility .slide-content,
-#usd .slide-content,
 #aces .slide-content,
 #render .slide-content,
+#disruption .slide-content,
 #timeline .slide-content {
   position: relative;
   z-index: 2;
@@ -265,22 +269,22 @@
 /* TEXT COLOR RULES FOR DARK VS COLORED BACKGROUNDS */
 /* Apply dark text on colored sections for readability */
 
-/* Dark sections - use gradient text for headings */
+/* Dark sections - use yellow for headings */
 #title h1, #title h2, #title h3,
 #roles h1, #roles h2, #roles h3,
-#pipeline h1, #pipeline h2, #pipeline h3,
-#assets h1, #assets h2, #assets h3,
+#assets h1, #assets h2, #assets h3, #assets h4, #assets h5, #assets h6,
 #rez h1, #rez h2, #rez h3,
 #ai h1, #ai h2, #ai h3 {
-  background: linear-gradient(135deg, #fec5fb 20%, #00bae2 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fdf800 !important;
+}
+
+/* Ensure FeatureColumns heading in assets section is yellow */
+#assets h2.text-foreground {
+  color: #fdf800 !important;
 }
 
 #title h4, #title h5, #title h6,
 #roles h4, #roles h5, #roles h6,
-#pipeline h4, #pipeline h5, #pipeline h6,
 #assets h4, #assets h5, #assets h6,
 #rez h4, #rez h5, #rez h6,
 #ai h4, #ai h5, #ai h6 {
@@ -289,7 +293,6 @@
 
 #title p, #title li,
 #roles p, #roles li,
-#pipeline p, #pipeline li,
 #assets p, #assets li,
 #rez p, #rez li,
 #ai p, #ai li {
@@ -298,7 +301,6 @@
 
 #title a,
 #roles a,
-#pipeline a,
 #assets a,
 #rez a,
 #ai a {
@@ -308,19 +310,111 @@
 /* Colored sections - use dark text (almost black for readability) */
 #structure h1, #structure h2, #structure h3,
 #responsibility h1, #responsibility h2, #responsibility h3,
-#usd h1, #usd h2, #usd h3,
-#aces h1, #aces h2, #aces h3,
-#render h1, #render h2, #render h3,
 #timeline h1, #timeline h2, #timeline h3 {
   color: #0e100f !important; /* Dark background color - fallback */
   color: hsl(var(--text-on-colored-heading, 0 0% 6%)) !important;
 }
 
+/* Infrastructure section - use yellow for main headings (h1, h2) */
+#render h1, #render h2 {
+  color: #fdf800 !important;
+}
+
+/* All other text, icons, and lines light in Infrastructure section */
+#render h3, #render h4, #render h5, #render h6,
+#render p, #render li, #render span,
+#render .text-foreground, #render .text-muted-foreground,
+#render .border, #render [class*="border"],
+#render hr, #render .border-border {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Lucide icons in Infrastructure section - use stroke, not fill */
+#render svg {
+  color: #ffffff !important;
+}
+
+#render svg path,
+#render svg circle,
+#render svg rect,
+#render svg line,
+#render svg polyline,
+#render svg polygon {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Override hardcoded dark icon colors in Infrastructure section */
+#render [class*="text-[#0e100f]"],
+#render .w-8.h-8 svg,
+#render .w-6.h-6 svg {
+  color: #ffffff !important;
+}
+
+#render [class*="text-[#0e100f]"] svg path,
+#render .w-8.h-8 svg path,
+#render .w-6.h-6 svg path {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* ACES section - use yellow for main headings (h1, h2) */
+#aces h1, #aces h2 {
+  color: #fdf800 !important;
+}
+
+/* All other text, icons, and lines light in ACES section */
+#aces h3, #aces h4, #aces h5, #aces h6,
+#aces p, #aces li, #aces span,
+#aces .text-foreground, #aces .text-muted-foreground,
+#aces .border, #aces [class*="border"],
+#aces hr, #aces .border-border {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Lucide icons in ACES section - use stroke, not fill */
+#aces svg {
+  color: #ffffff !important;
+}
+
+#aces svg path,
+#aces svg circle,
+#aces svg rect,
+#aces svg line,
+#aces svg polyline,
+#aces svg polygon {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Override hardcoded dark icon colors in ACES section */
+#aces [class*="text-[#0e100f]"],
+#aces .w-8.h-8 svg,
+#aces .w-6.h-6 svg {
+  color: #ffffff !important;
+}
+
+#aces [class*="text-[#0e100f]"] svg path,
+#aces .w-8.h-8 svg path,
+#aces .w-6.h-6 svg path {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Disruption section - use yellow for main headings only (h1, h2) */
+#disruption h1, #disruption h2 {
+  color: #fdf800 !important;
+}
+
+/* Keep subheaders (h3, h4, etc.) white in Disruption section */
+#disruption h3, #disruption h4, #disruption h5, #disruption h6 {
+  color: #ffffff !important;
+}
+
 #structure h4, #structure h5, #structure h6,
 #responsibility h4, #responsibility h5, #responsibility h6,
-#usd h4, #usd h5, #usd h6,
-#aces h4, #aces h5, #aces h6,
-#render h4, #render h5, #render h6,
 #timeline h4, #timeline h5, #timeline h6 {
   color: #1e1e1e !important; /* Dark gray - fallback */
   color: hsl(var(--text-on-colored-subheading, 0 0% 12%));
@@ -328,23 +422,52 @@
 
 #structure p, #structure li, #structure span,
 #responsibility p, #responsibility li, #responsibility span,
-#usd p, #usd li, #usd span,
 #aces p, #aces li, #aces span,
-#render p, #render li, #render span,
 #timeline p, #timeline li, #timeline span {
   color: #191919 !important; /* Near black - fallback */
   color: hsl(var(--text-on-colored-paragraph, 0 0% 10%)) !important;
 }
 
+/* Override timeline text color for GanttChart dark background */
+#timeline .gantt-chart-dark .gantt-title,
+#timeline .gantt-chart-dark h3.gantt-title {
+  color: #ffffff !important;
+}
+
+#timeline .gantt-chart-dark .gantt-month,
+#timeline .gantt-chart-dark div.gantt-month {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#timeline .gantt-chart-dark .gantt-week,
+#timeline .gantt-chart-dark div.gantt-week {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#timeline .gantt-chart-dark .gantt-label,
+#timeline .gantt-chart-dark span.gantt-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
 #structure a,
 #responsibility a,
-#usd a,
 #aces a,
 #render a,
+#disruption a,
 #timeline a {
   color: #0e100f !important; /* Dark - fallback */
   color: hsl(var(--text-on-colored-link, 0 0% 6%));
   text-decoration: underline;
+}
+
+/* Override text color for dark cards in ACES section - must be more specific than #aces p */
+#aces .aces-dark-card p,
+#aces .aces-dark-card p.aces-card-text,
+#aces .aces-dark-card .aces-card-text,
+#aces .aces-dark-card svg,
+#aces .aces-dark-card svg.aces-card-icon,
+#aces .aces-dark-card .aces-card-icon {
+  color: #ffffff !important;
 }
 
 /* Removed panel styling - using natural scroll now */
@@ -380,9 +503,7 @@
     @apply py-4 px-5 text-sm text-muted-foreground border-t border-border/30;
   }
   
-  .deck-table tr:hover td {
-    @apply bg-muted/10;
-  }
+  /* Row hover removed - using cell hover in MatrixTable component instead */
   
   /* Navigation */
   .nav-link {
@@ -403,11 +524,70 @@
   }
 }
 
+/* Matrix Table Component Styles - Reusable Widget */
+/* Placed after @layer components to ensure they override default deck-table styles */
+.deck-table.matrix-dark {
+  background-color: #0e100f !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+}
+
+.deck-table.matrix-dark th {
+  background-color: rgba(14, 16, 15, 0.8) !important;
+  background: rgba(14, 16, 15, 0.8) !important; /* Override any @apply bg styles */
+  color: hsl(var(--text-on-dark-heading)) !important;
+  text-align: left !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.deck-table.matrix-dark td {
+  color: hsl(var(--text-on-dark-paragraph)) !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Vertical borders for matrix */
+.deck-table.matrix-borders th.matrix-border-right {
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.deck-table.matrix-borders th:last-child {
+  border-right: none !important;
+}
+
+.deck-table.matrix-borders td.matrix-border-right {
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.deck-table.matrix-borders td:last-child {
+  border-right: none !important;
+}
+
+/* Cell hover for matrix (only highlight the cell under cursor) */
+.deck-table.matrix-cell-hover td:hover,
+.matrix-cell-hover-cell:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 0.2s ease;
+}
+
+.deck-table.matrix-cell-hover th:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transition: background-color 0.2s ease;
+}
+
 @layer utilities {
   /* Animation utilities */
   .animate-fade-up {
-    animation: fadeUp 0.6s ease-out forwards;
-    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Longer duration and smoother easing */
+    opacity: 0.9;
+  }
+  
+  .animate-fade-down {
+    animation: fadeDown 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Slide in from above */
+    opacity: 0.9;
   }
   
   .animation-delay-100 {
@@ -433,11 +613,76 @@
 
 @keyframes fadeUp {
   from {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 0.9;
+    transform: translateY(80px); /* Increased from 20px for more noticeable movement */
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0.9;
+    transform: translateY(-80px); /* Slide in from above */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Matrix Table Component Styles - Reusable Widget */
+/* Placed at the end to ensure they override all default deck-table styles */
+.deck-table.matrix-dark {
+  background-color: #0e100f !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+}
+
+.deck-table.matrix-dark th {
+  background-color: rgba(14, 16, 15, 0.8) !important;
+  background: rgba(14, 16, 15, 0.8) !important; /* Override any @apply bg styles */
+  color: hsl(var(--text-on-dark-heading)) !important;
+  text-align: left !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.deck-table.matrix-dark td {
+  color: hsl(var(--text-on-dark-paragraph)) !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Vertical borders for matrix */
+.deck-table.matrix-borders th.matrix-border-right {
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.deck-table.matrix-borders th:last-child {
+  border-right: none !important;
+}
+
+.deck-table.matrix-borders td.matrix-border-right {
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.deck-table.matrix-borders td:last-child {
+  border-right: none !important;
+}
+
+/* Cell hover for matrix (only highlight the cell under cursor) */
+.deck-table.matrix-cell-hover td:hover,
+.matrix-cell-hover-cell:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 0.2s ease;
+}
+
+.deck-table.matrix-cell-hover th:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transition: background-color 0.2s ease;
 }

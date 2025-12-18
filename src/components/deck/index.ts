@@ -18,3 +18,5 @@ export { FeatureColumns } from "./FeatureColumns";
 export { ImageGrid } from "./ImageGrid";
 export { DeckProvider } from "./DeckProvider";
 export { SectionHeading } from "./SectionHeading";
+export { ImageComparison } from "./ImageComparison";
+export { LauncherMockup } from "./LauncherMockup";

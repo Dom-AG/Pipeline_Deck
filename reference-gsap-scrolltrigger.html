@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSAP ScrollTrigger Reference</title>
+    <link rel="stylesheet" href="reference-gsap-scrolltrigger.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GSAP ScrollTrigger Reference</h1>
+        
+        <!-- Basic Scroll Animation -->
+        <section class="section" id="section1">
+            <h2>1. Basic Fade In</h2>
+            <div class="box fade-in">Scroll to see me fade in</div>
+        </section>
+
+        <!-- Scroll Progress -->
+        <section class="section" id="section2">
+            <h2>2. Scroll Progress Indicator</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <p>Progress bar fills as you scroll</p>
+        </section>
+
+        <!-- Pin Element -->
+        <section class="section" id="section3">
+            <h2>3. Pin Element</h2>
+            <div class="pinned-box" id="pinned">
+                I stay pinned while scrolling
+            </div>
+            <div class="spacer"></div>
+        </section>
+
+        <!-- Parallax -->
+        <section class="section" id="section4">
+            <h2>4. Parallax Effect</h2>
+            <div class="parallax-container">
+                <div class="parallax-item" id="parallax1">Layer 1</div>
+                <div class="parallax-item" id="parallax2">Layer 2</div>
+                <div class="parallax-item" id="parallax3">Layer 3</div>
+            </div>
+        </section>
+
+        <!-- Scroll Timeline -->
+        <section class="section" id="section5">
+            <h2>5. Scroll Timeline</h2>
+            <div class="timeline-box" id="timeline">
+                Animates as you scroll through this section
+            </div>
+        </section>
+
+        <!-- Text Reveal -->
+        <section class="section" id="section6">
+            <h2>6. Text Reveal</h2>
+            <div class="text-reveal">
+                <span class="reveal-word" data-word="This">This</span>
+                <span class="reveal-word" data-word="text">text</span>
+                <span class="reveal-word" data-word="reveals">reveals</span>
+                <span class="reveal-word" data-word="word">word</span>
+                <span class="reveal-word" data-word="by">by</span>
+                <span class="reveal-word" data-word="word">word</span>
+            </div>
+        </section>
+
+        <!-- Scroll to Section -->
+        <section class="section" id="section7">
+            <h2>7. Scroll to Section</h2>
+            <button class="scroll-btn" data-target="section1">Scroll to Section 1</button>
+            <button class="scroll-btn" data-target="section3">Scroll to Section 3</button>
+            <button class="scroll-btn" data-target="section5">Scroll to Section 5</button>
+        </section>
+
+        <!-- Horizontal Scroll -->
+        <section class="section" id="section8">
+            <h2>8. Horizontal Scroll</h2>
+            <div class="horizontal-scroll" id="horizontal">
+                <div class="horizontal-item">Item 1</div>
+                <div class="horizontal-item">Item 2</div>
+                <div class="horizontal-item">Item 3</div>
+                <div class="horizontal-item">Item 4</div>
+                <div class="horizontal-item">Item 5</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Register ScrollTrigger plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Basic Fade In
+        gsap.from(".fade-in", {
+            scrollTrigger: {
+                trigger: ".fade-in",
+                start: "top 80%",
+                end: "top 20%",
+                toggleActions: "play none none reverse"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1
+        });
+
+        // 2. Scroll Progress
+        gsap.to("#progress", {
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true
+            },
+            width: "100%"
+        });
+
+        // 3. Pin Element
+        ScrollTrigger.create({
+            trigger: "#pinned",
+            start: "top top",
+            end: "+=2000",
+            pin: true,
+            pinSpacing: true
+        });
+
+        // 4. Parallax Effect
+        gsap.to("#parallax1", {
+            scrollTrigger: {
+                trigger: "#section4",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            y: -100
+        });
+
+        gsap.to("#parallax2", {
+            scrollTrigger: {
+                trigger: "#section4",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            y: -200
+        });
+
+        gsap.to("#parallax3", {
+            scrollTrigger: {
+                trigger: "#section4",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            y: -300
+        });
+
+        // 5. Scroll Timeline
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: "#section5",
+                start: "top center",
+                end: "bottom center",
+                scrub: true
+            }
+        })
+        .to("#timeline", { rotation: 360, scale: 1.5 })
+        .to("#timeline", { backgroundColor: "#4a90e2" })
+        .to("#timeline", { borderRadius: "50%" });
+
+        // 6. Text Reveal
+        const words = document.querySelectorAll(".reveal-word");
+        words.forEach((word, i) => {
+            gsap.from(word, {
+                scrollTrigger: {
+                    trigger: word,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                delay: i * 0.1
+            });
+        });
+
+        // 7. Scroll to Section
+        document.querySelectorAll(".scroll-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = btn.getAttribute("data-target");
+                gsap.to(window, {
+                    duration: 1,
+                    scrollTo: {
+                        y: `#${target}`,
+                        offsetY: 100
+                    },
+                    ease: "power2.inOut"
+                });
+            });
+        });
+
+        // 8. Horizontal Scroll
+        const horizontal = document.querySelector("#horizontal");
+        const items = horizontal.querySelectorAll(".horizontal-item");
+        const itemWidth = items[0].offsetWidth;
+        const totalWidth = itemWidth * items.length;
+
+        gsap.to(horizontal, {
+            scrollTrigger: {
+                trigger: "#section8",
+                start: "top top",
+                end: () => `+=${totalWidth}`,
+                pin: true,
+                scrub: true
+            },
+            x: -totalWidth + window.innerWidth
+        });
+    </script>
+</body>
+</html>
+

@@ -102,8 +102,10 @@ export function Navigation({ items }: NavigationProps) {
       className="main-tool-bar fixed top-0 left-0 right-0 z-50"
       style={{
         height: '80px',
-        background: 'linear-gradient(144.02deg, #00bae2 4.56%, #fec5fb 72.98%)',
-        color: '#0e100f',
+        background: 'rgba(14, 16, 15, 0.7)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        color: '#ffffff',
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
@@ -114,34 +116,18 @@ export function Navigation({ items }: NavigationProps) {
         transition: 'ease 0.4s',
         willChange: 'transform',
         fontFamily: 'Inter, sans-serif',
-        fontWeight: 300,
+        fontWeight: 600,
         position: 'relative',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       }}
     >
-      {/* Noise texture overlay */}
-      <div 
-        style={{
-          content: '',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundBlendMode: 'color-dodge',
-          backgroundImage: 'url(/src/assets/noise.webp)',
-          backgroundRepeat: 'repeat',
-          backgroundSize: '200px 200px',
-          pointerEvents: 'none',
-          zIndex: 1,
-          opacity: 0.8,
-        }}
-      />
+      {/* Noise texture overlay - removed for frosted glass effect */}
       <div className="max-w-[1200px] mx-auto px-6 w-full" style={{ position: 'relative', zIndex: 2 }}>
         <div className="flex items-center justify-between gap-8">
           <button
             onClick={scrollToTop}
-            className="text-sm font-semibold text-[#0e100f] hover:opacity-80 transition-opacity cursor-pointer shrink-0"
-            style={{ fontWeight: 400 }}
+            className="text-sm font-bold text-white hover:opacity-80 transition-opacity cursor-pointer shrink-0"
+            style={{ fontWeight: 700 }}
           >
             Pipeline Blueprint
           </button>
@@ -151,15 +137,15 @@ export function Navigation({ items }: NavigationProps) {
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={cn(
-                  "text-sm text-[#0e100f] hover:opacity-80 transition-opacity whitespace-nowrap relative",
-                  activeSection === item.id && "font-semibold"
+                  "text-sm whitespace-nowrap relative transition-opacity hover:opacity-80",
+                  activeSection === item.id ? "text-[#fdf800] font-bold" : "text-white"
                 )}
-                style={{ fontWeight: activeSection === item.id ? 400 : 300 }}
+                style={{ fontWeight: activeSection === item.id ? 700 : 600 }}
               >
                 {item.label}
                 {activeSection === item.id && (
                   <span 
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0e100f] -mb-2" 
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#fdf800] -mb-2" 
                     style={{ height: '2px' }}
                   />
                 )}

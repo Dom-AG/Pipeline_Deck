@@ -58,7 +58,7 @@ export function FeatureColumns({
             key={idx} 
             className="deck-card text-left"
           >
-            <div className="w-8 h-8 mb-4 text-foreground">
+            <div className="w-8 h-8 mb-4 text-[#0e100f]">
               {feature.icon}
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
