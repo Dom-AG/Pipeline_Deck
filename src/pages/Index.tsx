@@ -19,6 +19,7 @@ import {
   QualityInvestmentChart,
 } from "@/components/deck";
 import { Code, Globe, Users, Box, Monitor, Layers, Cpu, ChevronUp, Timer, Grid, Download, GitBranch, Palette, Shield, Zap, Target, Lightbulb, CheckCircle2, XCircle, TrendingUp, TrendingDown, Brain, AlertTriangle, Rocket, BarChart3, Users2, Wrench } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
 import { activeTheme } from "@/config";
 import { content } from "@/config/content";
 import { getChartColor } from "@/lib/theme-helpers";
@@ -349,38 +350,44 @@ const Index = () => {
               {content.disruption.qualityVsInvestment.heading}
             </h3>
             
-            {/* Quality vs Investment Chart */}
-            <QualityInvestmentChart height={300} />
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.disruption.qualityVsInvestment.paths.map((path, idx) => {
-                const icons = [XCircle, BarChart3, CheckCircle2];
-                const Icon = icons[idx] || BarChart3;
-                return (
-                  <div key={idx} className={`border rounded-lg p-6 ${path.recommended ? 'border-accent/50 bg-[#0e100f]' : 'border-border/30 bg-[#0e100f]'}`}>
-                    <Icon className={`w-6 h-6 mb-3 ${path.recommended ? 'text-accent' : 'text-white'}`} />
-                    <h4 className={`text-lg font-semibold mb-2 ${path.recommended ? 'text-accent' : 'text-white'}`}>
-                      {path.title}
-                    </h4>
-                    <p className="text-sm text-white/80 mb-3">
-                      {path.investment}
-                    </p>
-                    <p className="text-sm text-white/80 mb-3">
-                      {path.quality}
-                    </p>
-                    {path.useCase && (
-                      <p className="text-xs text-white/70">
-                        <span className="font-medium text-white">Use case:</span> {path.useCase}
+            {/* Chart on right, cards on left - vertical layout */}
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Three cards on the left - vertical layout, narrower */}
+              <div className="space-y-4 lg:w-2/5">
+                {content.disruption.qualityVsInvestment.paths.map((path, idx) => {
+                  const icons = [XCircle, BarChart3, CheckCircle2];
+                  const Icon = icons[idx] || BarChart3;
+                  return (
+                    <div key={idx} className={`border rounded-lg p-4 ${path.recommended ? 'border-accent/50 bg-[#0e100f]' : 'border-border/30 bg-[#0e100f]'}`}>
+                      <Icon className={`w-5 h-5 mb-2 ${path.recommended ? 'text-accent' : 'text-white'}`} />
+                      <h4 className={`text-base font-semibold mb-2 ${path.recommended ? 'text-accent' : 'text-white'}`}>
+                        {path.title}
+                      </h4>
+                      <p className="text-xs text-white/80 mb-2">
+                        {path.investment}
                       </p>
-                    )}
-                    {path.result && (
-                      <p className="text-xs text-white/70 mt-2">
-                        <span className="font-medium text-white">Result:</span> {path.result}
+                      <p className="text-xs text-white/80 mb-2">
+                        {path.quality}
                       </p>
-                    )}
-                  </div>
-                );
-              })}
+                      {path.useCase && (
+                        <p className="text-xs text-white/70">
+                          <span className="font-medium text-white">Use case:</span> {path.useCase}
+                        </p>
+                      )}
+                      {path.result && (
+                        <p className="text-xs text-white/70 mt-2">
+                          <span className="font-medium text-white">Result:</span> {path.result}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Chart on the right - wider, matching height */}
+              <div className="lg:w-3/5 lg:sticky lg:top-6 flex">
+                <QualityInvestmentChart height={480} className="w-full" />
+              </div>
             </div>
           </div>
 

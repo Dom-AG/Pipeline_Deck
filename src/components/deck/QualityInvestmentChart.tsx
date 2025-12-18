@@ -1,11 +1,12 @@
 interface QualityInvestmentChartProps {
   height?: number;
+  className?: string;
 }
 
-export function QualityInvestmentChart({ height = 300 }: QualityInvestmentChartProps) {
+export function QualityInvestmentChart({ height = 300, className }: QualityInvestmentChartProps) {
   const width = 600; // Narrower chart
   const chartHeight = height;
-  const padding = { top: 30, right: 60, bottom: 50, left: 60 };
+  const padding = { top: 30, right: 80, bottom: 50, left: 60 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeightInner = chartHeight - padding.top - padding.bottom;
 
@@ -140,7 +141,7 @@ export function QualityInvestmentChart({ height = 300 }: QualityInvestmentChartP
   }
 
   return (
-    <div className="w-full bg-[#0e100f] border border-border/30 rounded-lg p-6">
+    <div className={`w-full bg-[#0e100f] border border-border/30 rounded-lg p-6 ${className || ''}`}>
       <div className="w-full" style={{ height: `${chartHeight}px` }}>
         <svg
           width="100%"
@@ -225,8 +226,8 @@ export function QualityInvestmentChart({ height = 300 }: QualityInvestmentChartP
             Quality (%)
           </text>
           <text
-            x={padding.left + chartWidth + 10}
-            y={padding.top + chartHeightInner}
+            x={padding.left + chartWidth + 5}
+            y={padding.top + chartHeightInner + 5}
             textAnchor="start"
             fill="rgba(255, 255, 255, 0.7)"
             fontSize="12"
