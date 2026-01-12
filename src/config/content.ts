@@ -372,14 +372,45 @@ export const content = {
         "For image and asset generation, hosted services such as Krea and similar web UIs are kept for early ideation only, while ComfyUI is preferred for production because it can run on internal hardware, integrate with the launcher, and expose node graphs and parameters under full studio control with manual QC by artists.",
       ],
     },
-    riskAssessment: {
-      title: "Risk Assessment",
-      risks: [
-        { name: "Vendor Lock-in (Lovable, v0, hosted AI UIs)", likelihood: "medium" as const, impact: "high" as const },
-        { name: "Cloud Misconfiguration / External Service Outage", likelihood: "medium" as const, impact: "medium" as const },
-        { name: "Data Privacy & Model Training Risk", likelihood: "low" as const, impact: "high" as const },
-        { name: "Unexpected Updates to Hosted Tools & APIs", likelihood: "high" as const, impact: "medium" as const },
+    claudeCode: {
+      heading: "Claude Code",
+      description:
+        "Terminal‑first coding assistant that runs agents and sub‑agents over your repo to plan, edit, and test code autonomously, while connecting to external tools via MPCs/Model Context Protocol servers and reusing packaged workflows via Skills for consistent, repeatable tasks.",
+    },
+    ralphWiggum: {
+      heading: "Ralph Wiggum",
+      description: "Sandbox everything: Run Ralph in clones/containers, never main repo",
+      guidelines: [
+        "Set iteration limits: Max 10-20 iterations, never unlimited",
+        "Define done clearly: \"All tests pass + no test changes\" = convergence",
+        "Compact context: Start fresh sessions every task to avoid bloat",
+        "Use Granny gates: Review after every 5 iterations minimum",
       ],
+    },
+    geminiGranny: {
+      heading: "Gemini Granny: Cost-Free QC",
+      setup: {
+        title: "Setup",
+        description: "Free Gemini API via aistudio.google.com. No credit card needed. 10 minutes to start.",
+      },
+      cost: {
+        title: "Cost",
+        description: "$0/month (free tier). 1,000 requests/day limit. Even heavy usage = <$1/month.",
+      },
+      function: {
+        title: "Function",
+        description: "Reviews Ralph diffs. Outputs CONTINUE/STOP. Prevents thrashing.",
+      },
+    },
+    realWorldExample: {
+      heading: "Real-World Example: VFX Pipeline Refactor",
+      task: "GSD Task: Update Database/ module to use new Convex client, preserve signatures",
+      results: {
+        ralph: "Ralph: 7 iterations × 12k tokens = 84k tokens ≈ $0.85",
+        granny: "Granny: 7 reviews × Gemini free = $0",
+        total: "Total: $0.85 for one well-scoped task",
+        comparison: "Compare: 50-iteration free-running Ralph = $50-100 on same scope",
+      },
     },
   },
 

@@ -48,6 +48,8 @@ import v0Logo from "@/assets/v0.png";
 import acesWorkflow1 from "@/assets/aces-workflow-1.png";
 import acesWorkflow2 from "@/assets/aces-workflow-2.png";
 import acesWorkflow3 from "@/assets/aces-workflow-3.png";
+import claudeCodeImage from "@/assets/Claude_Code.jpg";
+import ralphImage from "@/assets/Ralph.jpg";
 
 const navItems = [
   { id: "title", label: "Overview" },
@@ -1048,9 +1050,69 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Risk Assessment Table */}
-        <div className="mt-12">
-          <RiskMatrix risks={content.ai.riskAssessment.risks} title={content.ai.riskAssessment.title} />
+        {/* Claude Code Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          <div className="flex items-center justify-center">
+            <img src={claudeCodeImage} alt="Claude Code" className="w-full h-auto rounded-lg object-contain max-h-96" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.claudeCode.heading}</h3>
+            <p className="text-muted-foreground">
+              {content.ai.claudeCode.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Ralph Wiggum Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <img src={ralphImage} alt="Ralph Wiggum" className="w-full h-auto rounded-lg object-contain max-h-96 max-w-md" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.ralphWiggum.heading}</h3>
+            <p className="text-muted-foreground mb-4">
+              {content.ai.ralphWiggum.description}
+            </p>
+            <ul className="space-y-2 text-muted-foreground">
+              {content.ai.ralphWiggum.guidelines.map((guideline, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="text-foreground mt-1.5">•</span>
+                  <span>{guideline}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Gemini Granny Section */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-foreground mb-6">{content.ai.geminiGranny.heading}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.setup.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.setup.description}</p>
+            </div>
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.cost.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.cost.description}</p>
+            </div>
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.function.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.function.description}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Real-World Example Section */}
+        <div className="mb-12 border border-border rounded-lg p-8 bg-muted/10">
+          <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.realWorldExample.heading}</h3>
+          <p className="text-lg text-foreground mb-6 font-medium">{content.ai.realWorldExample.task}</p>
+          <div className="space-y-3 text-muted-foreground">
+            <p>{content.ai.realWorldExample.results.ralph}</p>
+            <p>{content.ai.realWorldExample.results.granny}</p>
+            <p className="text-foreground font-semibold">{content.ai.realWorldExample.results.total}</p>
+            <p className="text-sm italic">{content.ai.realWorldExample.results.comparison}</p>
+          </div>
         </div>
       </SlideSection>
 
