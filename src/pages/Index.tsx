@@ -1064,9 +1064,9 @@ const Index = () => {
         </div>
 
         {/* Ralph Wiggum Section */}
-        <div className="mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <img src={ralphImage} alt="Ralph Wiggum" className="w-full h-auto rounded-lg object-contain max-h-96 max-w-md" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          <div className="flex items-center justify-center">
+            <img src={ralphImage} alt="Ralph Wiggum" className="w-full h-auto rounded-lg object-contain max-h-[48rem]" />
           </div>
           <div>
             <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.ralphWiggum.heading}</h3>
