@@ -20,6 +20,7 @@ import {
 } from "@/components/deck";
 import { Code, Globe, Users, Box, Monitor, Layers, Cpu, ChevronUp, Timer, Grid, Download, GitBranch, Palette, Shield, Zap, Target, Lightbulb, CheckCircle2, XCircle, TrendingUp, TrendingDown, Brain, AlertTriangle, Rocket, BarChart3, Users2, Wrench } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { activeTheme } from "@/config";
 import { content } from "@/config/content";
 import { getChartColor } from "@/lib/theme-helpers";
@@ -49,7 +50,9 @@ import acesWorkflow1 from "@/assets/aces-workflow-1.png";
 import acesWorkflow2 from "@/assets/aces-workflow-2.png";
 import acesWorkflow3 from "@/assets/aces-workflow-3.png";
 import claudeCodeImage from "@/assets/Claude_Code.jpg";
+import openCodeImage from "@/assets/Open_Code.png";
 import ralphImage from "@/assets/Ralph.jpg";
+import pipelineFlowchart from "@/assets/Pipeline_Flowchart.png";
 
 const navItems = [
   { id: "title", label: "Overview" },
@@ -121,6 +124,8 @@ const ganttTasks = [
 ];
 
 const Index = () => {
+  const [isFlowchartOpen, setIsFlowchartOpen] = useState(false);
+
   return (
     <DeckProvider items={navItems}>
       {/* Navbar - Fixed layer */}
@@ -150,76 +155,167 @@ const Index = () => {
         />
       </SlideSection>
 
-      {/* VFX Studio Technical Roles */}
-      <SlideSection id="roles">
-        <div className="space-y-16">
-        <CardGrid
-          heading="VFX studio technical roles"
-          headingHighlight="technical roles"
-          cards={[
-            {
-              icon: <Target className="w-6 h-6" />,
-              title: "Pipeline Lead / TD",
-              description: "Focus: Pipeline architecture & strategy",
-              subdescription: "Responsibilities: Define OS support, pipeline vision, design and testing. Owns: Overall pipeline health; leads architecture decisions; interfaces with production and artists.",
-            },
-            {
-              icon: <Layers className="w-6 h-6" />,
-              title: "Mid-level Pipeline Developer",
-              description: "Focus: Core system & tool development",
-              subdescription: "Responsibilities: Build and maintain pipeline tools, workflows, mentor team. Owns: Technical implementation of pipeline systems; delivers new features; supports production needs.",
-            },
-            {
-              icon: <Zap className="w-6 h-6" />,
-              title: "Junior Pipeline Engineer",
-              description: "Focus: Day-to-day pipeline support",
-              subdescription: "Responsibilities: OS support, Stability QA, testing and maintaining hardware/Software. Owns: Routine maintenance, software compatibility, benchmarking, implementation and assists in tool development.",
-            },
-            {
-              icon: <Shield className="w-6 h-6" />,
-              title: "IT Specialist",
-              description: "Focus: Infrastructure & systems management",
-              subdescription: "Responsibilities: Manage hardware, network, licenses, backups, deployments. Owns: Studio infrastructure reliability, license management, and environment setup; collaborates with pipeline team.",
-            },
-          ]}
-          columns={4}
-          variant="filled"
-        />
-
-          {/* Responsibility Matrix - Merged into Roles */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="space-y-6">
-              <SectionHeading 
-                text={content.responsibility.heading}
-                size="xl"
+      {/* AI Integration */}
+      <SlideSection id="ai">
+        {/* Systems Flowchart - Full Width */}
+        <div className="w-full mb-12">
+          <SectionHeading 
+            text="Systems Flowchart"
+            size="lg"
+            className="mb-4"
+          />
+          <Dialog open={isFlowchartOpen} onOpenChange={setIsFlowchartOpen}>
+            <DialogTrigger asChild>
+              <div className="cursor-pointer hover:opacity-90 transition-opacity">
+                <img 
+                  src={pipelineFlowchart} 
+                  alt="Pipeline Flowchart" 
+                  className="w-full h-auto object-contain rounded-lg"
+                />
+              </div>
+            </DialogTrigger>
+            <DialogContent 
+              className="max-w-none w-screen h-screen p-4 m-0 rounded-none flex items-center justify-center"
+              style={{
+                left: 0,
+                top: 0,
+                transform: 'none',
+                maxWidth: '100vw',
+                maxHeight: '100vh',
+              }}
+            >
+              <img 
+                src={pipelineFlowchart} 
+                alt="Pipeline Flowchart - Expanded" 
+                className="max-w-full max-h-[calc(100vh-2rem)] w-auto h-auto object-contain"
               />
-            <ul className="space-y-4 text-sm text-muted-foreground">
-                {content.responsibility.summary.map((item, idx) => {
-                  const [role, ...descriptionParts] = item.split(':');
-                  const description = descriptionParts.join(':');
-                  return (
-                    <li key={idx}>
-                      <span className="text-foreground font-medium">{role}:</span> {description}
-                    </li>
-                  );
-                })}
+            </DialogContent>
+          </Dialog>
+        </div>
+        
+              <SectionHeading 
+                text={content.ai.heading}
+                size="lg"
+                className="mb-4"
+              />
+        <p className="text-lg text-muted-foreground mb-12 max-w-4xl">
+          {content.ai.description}
+        </p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 mb-12 justify-items-center">
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <img src={cursorLogo} alt="Cursor AI" className="w-full h-full object-contain" />
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <img src={perplexityLogo} alt="Perplexity AI" className="w-[140%] h-[140%] object-contain" style={{ transform: "scale(1.4)" }} />
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <img src={comfyLogo} alt="ComfyUI" className="w-full h-full object-contain p-4" />
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <svg width="109" height="16" fill="#1273EB" viewBox="0 0 109 16" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain">
+              <path d="M28.6279 10.0932C28.5821 10.0476 28.6126 9.95621 28.689 9.95621H28.9947H29.01C31.6235 9.69741 33.8091 8.0076 33.8091 5.02378C33.8091 1.58325 31.0274 0 27.8331 0H12.901C12.7023 0 12.5342 0.167458 12.5342 0.365365V15.6194C12.5342 15.8173 12.7023 15.9847 12.901 15.9847H17.6695C17.8682 15.9847 18.0363 15.8173 18.0363 15.6194V10.7478C18.0363 10.5499 18.2044 10.3825 18.4031 10.3825H21.5057C21.9336 10.3825 22.3463 10.5652 22.6367 10.8849L27.0537 15.8477C27.1454 15.8934 27.2371 15.9239 27.3288 15.9695H33.6257C33.9466 15.9695 34.1147 15.5889 33.8855 15.3606L28.6279 10.0932ZM26.641 6.82016H18.3878C18.1891 6.82016 18.021 6.6527 18.021 6.45479V4.14081C18.021 3.94291 18.1891 3.77544 18.3878 3.77544H26.5188C27.6803 3.77544 28.4445 4.33872 28.4445 5.25213C28.4445 6.28733 27.7414 6.82016 26.641 6.82016Z"></path>
+              <path d="M88.9058 0.015625H84.1373C83.9386 0.015625 83.7705 0.183083 83.7705 0.38099V10.5047C83.7705 10.7026 83.9386 10.87 84.1373 10.87H88.9058C89.1045 10.87 89.2726 10.7026 89.2726 10.5047V0.38099C89.2573 0.183083 89.1045 0.015625 88.9058 0.015625Z"></path>
+              <path d="M88.9058 13.0156H84.1373C83.9386 13.0156 83.7705 13.1831 83.7705 13.381V15.6341C83.7705 15.832 83.9386 15.9994 84.1373 15.9994H88.9058C89.1045 15.9994 89.2726 15.832 89.2726 15.6341V13.381C89.2573 13.1831 89.1045 13.0156 88.9058 13.0156Z"></path>
+              <path d="M108.53 15.5132L102.401 7.4295C102.264 7.24682 102.279 7.00324 102.432 6.83578L108.225 0.502776C108.393 0.320094 108.255 0.0308495 108.011 0.0308495H102.997C102.86 0.0308495 102.738 0.0917438 102.646 0.183085L97.0521 6.30296C97.0369 6.31818 97.0063 6.3334 96.9757 6.3334H96.777C96.7312 6.3334 96.6853 6.28773 96.6853 6.24206V0.350541C96.6853 0.167858 96.5325 0.015625 96.3491 0.015625H91.764C91.5806 0.015625 91.4277 0.167858 91.4277 0.350541V15.635C91.4277 15.8025 91.5653 15.9395 91.7334 15.9395H96.3644C96.5325 15.9395 96.67 15.8025 96.67 15.635V12.7882C96.67 12.6664 96.7159 12.5598 96.7923 12.4685L98.825 10.3068C98.825 10.3068 98.8403 10.2763 98.8862 10.2763C98.932 10.2763 99.1307 10.2763 99.1613 10.2763C99.1919 10.2763 99.2224 10.3068 99.2224 10.3068L103.318 15.7568C103.41 15.8786 103.548 15.9395 103.701 15.9395H108.301C108.545 15.9395 108.668 15.6807 108.53 15.5132Z"></path>
+              <path d="M41.2214 3.66928H45.8829C46.0816 3.66928 46.2497 3.50182 46.2497 3.30392V0.38099C46.2497 0.183083 46.0816 0.015625 45.8829 0.015625H36.2389C36.0402 0.015625 35.8721 0.183083 35.8721 0.38099V15.635C35.8721 15.8329 36.0402 16.0004 36.2389 16.0004H45.8829C46.0816 16.0004 46.2497 15.8329 46.2497 15.635V12.7121C46.2497 12.5142 46.0816 12.3467 45.8829 12.3467H41.1908C40.9921 12.3467 40.824 12.1793 40.824 11.9813V10.0784C40.824 9.86527 41.0074 9.68259 41.2214 9.68259H45.8829C46.0816 9.68259 46.2497 9.51513 46.2497 9.31723V6.45519C46.2497 6.25729 46.0816 6.08983 45.8829 6.08983H41.2214C41.0074 6.08983 40.824 5.90714 40.824 5.69401V4.04987C40.824 3.83674 41.0074 3.66928 41.2214 3.66928Z"></path>
+              <path d="M53.7546 3.66928H58.4161C58.6148 3.66928 58.7829 3.50182 58.7829 3.30392V0.38099C58.7829 0.183083 58.6148 0.015625 58.4161 0.015625H48.7721C48.5734 0.015625 48.4053 0.183083 48.4053 0.38099V15.635C48.4053 15.8329 48.5734 16.0004 48.7721 16.0004H58.4161C58.6148 16.0004 58.7829 15.8329 58.7829 15.635V12.7121C58.7829 12.5142 58.6148 12.3467 58.4161 12.3467H53.724C53.5253 12.3467 53.3572 12.1793 53.3572 11.9813V10.0784C53.3572 9.86527 53.5406 9.68259 53.7546 9.68259H58.4161C58.6148 9.68259 58.7829 9.51513 58.7829 9.31723V6.45519C58.7829 6.25729 58.6148 6.08983 58.4161 6.08983H53.7546C53.5406 6.08983 53.3572 5.90714 53.3572 5.69401V4.04987C53.3572 3.83674 53.5406 3.66928 53.7546 3.66928Z"></path>
+              <path d="M5.35124 3.66928H10.0128C10.2115 3.66928 10.3796 3.50182 10.3796 3.30392V0.38099C10.3796 0.183083 10.2115 0.015625 10.0128 0.015625H0.368765C0.170077 0.015625 0.00195312 0.183083 0.00195312 0.38099V15.635C0.00195312 15.8329 0.170077 16.0004 0.368765 16.0004H4.58706C4.78575 16.0004 4.95387 15.8329 4.95387 15.635V10.0936C4.95387 9.88049 5.13727 9.69781 5.35124 9.69781H10.0128C10.2115 9.69781 10.3796 9.53035 10.3796 9.33245V6.47042C10.3796 6.27251 10.2115 6.10505 10.0128 6.10505H5.35124C5.13727 6.10505 4.95387 5.92237 4.95387 5.70924V4.06509C4.95387 3.83674 5.12199 3.66928 5.35124 3.66928Z"></path>
+              <path d="M75.7474 0.015625H61.3043C61.1056 0.015625 60.9375 0.183083 60.9375 0.38099V15.635C60.9375 15.8329 61.1056 16.0004 61.3043 16.0004H66.0728C66.2715 16.0004 66.4396 15.8329 66.4396 15.635V10.596C66.4396 10.4894 66.516 10.4133 66.623 10.4133H67.3108H75.7627C79.4307 10.4133 82.2124 8.51037 82.2124 5.14596C82.2124 1.65977 79.4308 0.015625 75.7474 0.015625ZM75.0596 6.82056H66.8064C66.6077 6.82056 66.4396 6.6531 66.4396 6.45519V4.14121C66.4396 3.94331 66.6077 3.77584 66.8064 3.77584H74.9374C76.0989 3.77584 76.8631 4.33912 76.8631 5.25253C76.8631 6.28773 76.1448 6.82056 75.0596 6.82056Z"></path>
+            </svg>
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <svg aria-label="Krea Logo" role="img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain" style={{ color: 'currentColor' }}>
+              <path d="M8.34057 1.26646C10.1061 1.14218 11.6638 2.37142 11.8911 4.06824C12.1069 5.68015 11.0037 7.23915 9.34608 7.60419C8.93062 7.69566 8.46886 7.67023 8.02919 7.72601C6.95925 7.86191 6.04308 8.30843 5.2807 9.06558L5.27279 9.06966L5.26385 9.0689L5.2568 9.06354L5.25394 9.05533C5.25366 9.04931 5.25521 9.04398 5.25861 9.03933C5.26343 9.03249 5.26583 9.02497 5.26583 9.01677C5.25535 7.76661 5.2521 6.253 5.25606 4.47593C5.25946 2.79675 6.58613 1.38951 8.34057 1.26646Z" fill="currentColor"></path>
+              <path d="M8.5264 15.3045C6.27918 15.2869 4.66832 13.0758 5.44996 11.0041C5.88114 9.86055 6.9457 9.0267 8.20737 8.89545C8.59097 8.85566 9.05188 8.86591 9.42189 8.79701C11.322 8.44386 12.7897 6.99068 13.0867 5.14047C13.1525 4.7299 13.1181 4.24058 13.215 3.805C13.6636 1.78908 15.9736 0.657869 17.9137 1.56924C18.9252 2.04502 19.6032 2.94326 19.771 4.01623C19.8055 4.23634 19.8167 4.50896 19.8045 4.83408C19.5845 10.6755 14.5956 15.3529 8.5264 15.3045Z" fill="currentColor"></path>
+              <path d="M11.3567 16.2337C11.3465 16.229 11.3396 16.2222 11.3359 16.2132C11.3352 16.2114 11.3349 16.2094 11.335 16.2075C11.3351 16.2056 11.3356 16.2037 11.3366 16.202C11.3375 16.2003 11.3388 16.1988 11.3403 16.1976C11.3419 16.1964 11.3437 16.1956 11.3457 16.1951C13.6512 15.6674 15.6487 14.6058 17.338 13.0102C17.3683 12.9815 17.3959 12.9837 17.4208 13.0168C17.6918 13.3736 17.9748 13.7571 18.2016 14.1234C19.1336 15.6279 19.6617 17.2574 19.7857 19.0121C19.8106 19.3659 19.8184 19.6392 19.8091 19.832C19.7254 21.537 18.2985 22.9126 16.4998 22.9229C14.9072 22.9315 13.5071 21.845 13.2046 20.325C13.1333 19.9653 13.1553 19.4669 13.0946 19.0867C12.9071 17.9169 12.3355 16.9702 11.3797 16.2464C11.3754 16.2428 11.3678 16.2386 11.3567 16.2337Z" fill="currentColor"></path>
+              <path d="M7.98752 22.874C6.63495 22.6386 5.5466 21.5882 5.30446 20.2814C5.27132 20.1026 5.25476 19.8301 5.25476 19.464C5.25447 18.0227 5.25419 16.5813 5.25391 15.1397C5.25391 15.1255 5.25929 15.1232 5.27005 15.1327C6.15449 15.919 7.08397 16.3993 8.29806 16.4793C8.29919 16.4795 8.40794 16.4831 8.62431 16.4899C10.205 16.5404 11.544 17.5764 11.8528 19.0813C12.3099 21.3064 10.2955 23.2756 7.98752 22.874Z" fill="currentColor"></path>
+            </svg>
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <img src={lovableLogo} alt="Lovable" className="w-full h-full object-contain" />
+          </div>
+          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
+            <img src={v0Logo} alt="v0" className="w-full h-full object-contain" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          <div>
+            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.generativeModel.heading}</h3>
+            {content.ai.generativeModel.paragraphs.map((paragraph, index) => (
+              <p key={index} className={`text-muted-foreground ${index < content.ai.generativeModel.paragraphs.length - 1 ? 'mb-4' : ''}`}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* Open Code / Claude Code Section */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-foreground mb-6">Open Code / Claude Code</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="flex items-center justify-center">
+              <img src={openCodeImage} alt="Open Code" className="w-full h-auto rounded-lg object-contain max-h-96" />
+            </div>
+            <div className="flex items-center justify-center">
+              <img src={claudeCodeImage} alt="Claude Code" className="w-full h-auto rounded-lg object-contain max-h-96" />
+            </div>
+          </div>
+          <p className="text-muted-foreground">
+            {content.ai.claudeCode.description}
+          </p>
+        </div>
+
+        {/* Ralph Wiggum Section */}
+        <div className="mt-24 mb-12">
+          <div className="w-full mb-8">
+            <img src={ralphImage} alt="Ralph Wiggum" className="w-full h-auto rounded-lg object-contain" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.ralphWiggum.heading}</h3>
+            <p className="text-muted-foreground mb-4">
+              {content.ai.ralphWiggum.description}
+            </p>
+            <ul className="space-y-2 text-muted-foreground">
+              {content.ai.ralphWiggum.guidelines.map((guideline, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="text-foreground mt-1.5">•</span>
+                  <span>{guideline}</span>
+                </li>
+              ))}
             </ul>
           </div>
-          <div className="lg:col-span-2">
-              <MatrixTable
-              columns={[
-                { key: "task", header: "Task/Project" },
-                { key: "lead", header: "Pipeline Lead/TD" },
-                { key: "dev", header: "Pipeline Developer" },
-                { key: "junior", header: "Junior Engineer" },
-                { key: "it", header: "IT Specialist" },
-              ]}
-              data={responsibilityData}
-                variant="dark"
-                showVerticalBorders={true}
-                cellHover={true}
-            />
+        </div>
+
+        {/* Gemini Granny Section */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-foreground mb-6">{content.ai.geminiGranny.heading}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.setup.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.setup.description}</p>
             </div>
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.cost.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.cost.description}</p>
+            </div>
+            <div className="border border-border rounded-lg p-6 bg-muted/10">
+              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.function.title}</h4>
+              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.function.description}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Real-World Example Section */}
+        <div className="mb-12 border border-border rounded-lg p-8 bg-muted/10">
+          <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.realWorldExample.heading}</h3>
+          <p className="text-lg text-foreground mb-6 font-medium">{content.ai.realWorldExample.task}</p>
+          <div className="space-y-3 text-muted-foreground">
+            <p>{content.ai.realWorldExample.results.ralph}</p>
+            <p>{content.ai.realWorldExample.results.granny}</p>
+            <p className="text-foreground font-semibold">{content.ai.realWorldExample.results.total}</p>
+            <p className="text-sm italic">{content.ai.realWorldExample.results.comparison}</p>
           </div>
         </div>
       </SlideSection>
@@ -990,128 +1086,76 @@ const Index = () => {
         </div>
       </SlideSection>
 
-      {/* AI Integration */}
-      <SlideSection id="ai">
+      {/* VFX Studio Technical Roles */}
+      <SlideSection id="roles">
+        <div className="space-y-16">
+        <CardGrid
+          heading="VFX studio technical roles"
+          headingHighlight="technical roles"
+          cards={[
+            {
+              icon: <Target className="w-6 h-6" />,
+              title: "Pipeline Lead / TD",
+              description: "Focus: Pipeline architecture & strategy",
+              subdescription: "Responsibilities: Define OS support, pipeline vision, design and testing. Owns: Overall pipeline health; leads architecture decisions; interfaces with production and artists.",
+            },
+            {
+              icon: <Layers className="w-6 h-6" />,
+              title: "Mid-level Pipeline Developer",
+              description: "Focus: Core system & tool development",
+              subdescription: "Responsibilities: Build and maintain pipeline tools, workflows, mentor team. Owns: Technical implementation of pipeline systems; delivers new features; supports production needs.",
+            },
+            {
+              icon: <Zap className="w-6 h-6" />,
+              title: "Junior Pipeline Engineer",
+              description: "Focus: Day-to-day pipeline support",
+              subdescription: "Responsibilities: OS support, Stability QA, testing and maintaining hardware/Software. Owns: Routine maintenance, software compatibility, benchmarking, implementation and assists in tool development.",
+            },
+            {
+              icon: <Shield className="w-6 h-6" />,
+              title: "IT Specialist",
+              description: "Focus: Infrastructure & systems management",
+              subdescription: "Responsibilities: Manage hardware, network, licenses, backups, deployments. Owns: Studio infrastructure reliability, license management, and environment setup; collaborates with pipeline team.",
+            },
+          ]}
+          columns={4}
+          variant="filled"
+        />
+
+          {/* Responsibility Matrix - Merged into Roles */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="space-y-6">
               <SectionHeading 
-                text={content.ai.heading}
-                size="lg"
-                className="mb-4"
+                text={content.responsibility.heading}
+                size="xl"
               />
-        <p className="text-lg text-muted-foreground mb-12 max-w-4xl">
-          {content.ai.description}
-        </p>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 mb-12 justify-items-center">
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <img src={cursorLogo} alt="Cursor AI" className="w-full h-full object-contain" />
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <img src={perplexityLogo} alt="Perplexity AI" className="w-[140%] h-[140%] object-contain" style={{ transform: "scale(1.4)" }} />
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <img src={comfyLogo} alt="ComfyUI" className="w-full h-full object-contain p-4" />
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <svg width="109" height="16" fill="#1273EB" viewBox="0 0 109 16" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain">
-              <path d="M28.6279 10.0932C28.5821 10.0476 28.6126 9.95621 28.689 9.95621H28.9947H29.01C31.6235 9.69741 33.8091 8.0076 33.8091 5.02378C33.8091 1.58325 31.0274 0 27.8331 0H12.901C12.7023 0 12.5342 0.167458 12.5342 0.365365V15.6194C12.5342 15.8173 12.7023 15.9847 12.901 15.9847H17.6695C17.8682 15.9847 18.0363 15.8173 18.0363 15.6194V10.7478C18.0363 10.5499 18.2044 10.3825 18.4031 10.3825H21.5057C21.9336 10.3825 22.3463 10.5652 22.6367 10.8849L27.0537 15.8477C27.1454 15.8934 27.2371 15.9239 27.3288 15.9695H33.6257C33.9466 15.9695 34.1147 15.5889 33.8855 15.3606L28.6279 10.0932ZM26.641 6.82016H18.3878C18.1891 6.82016 18.021 6.6527 18.021 6.45479V4.14081C18.021 3.94291 18.1891 3.77544 18.3878 3.77544H26.5188C27.6803 3.77544 28.4445 4.33872 28.4445 5.25213C28.4445 6.28733 27.7414 6.82016 26.641 6.82016Z"></path>
-              <path d="M88.9058 0.015625H84.1373C83.9386 0.015625 83.7705 0.183083 83.7705 0.38099V10.5047C83.7705 10.7026 83.9386 10.87 84.1373 10.87H88.9058C89.1045 10.87 89.2726 10.7026 89.2726 10.5047V0.38099C89.2573 0.183083 89.1045 0.015625 88.9058 0.015625Z"></path>
-              <path d="M88.9058 13.0156H84.1373C83.9386 13.0156 83.7705 13.1831 83.7705 13.381V15.6341C83.7705 15.832 83.9386 15.9994 84.1373 15.9994H88.9058C89.1045 15.9994 89.2726 15.832 89.2726 15.6341V13.381C89.2573 13.1831 89.1045 13.0156 88.9058 13.0156Z"></path>
-              <path d="M108.53 15.5132L102.401 7.4295C102.264 7.24682 102.279 7.00324 102.432 6.83578L108.225 0.502776C108.393 0.320094 108.255 0.0308495 108.011 0.0308495H102.997C102.86 0.0308495 102.738 0.0917438 102.646 0.183085L97.0521 6.30296C97.0369 6.31818 97.0063 6.3334 96.9757 6.3334H96.777C96.7312 6.3334 96.6853 6.28773 96.6853 6.24206V0.350541C96.6853 0.167858 96.5325 0.015625 96.3491 0.015625H91.764C91.5806 0.015625 91.4277 0.167858 91.4277 0.350541V15.635C91.4277 15.8025 91.5653 15.9395 91.7334 15.9395H96.3644C96.5325 15.9395 96.67 15.8025 96.67 15.635V12.7882C96.67 12.6664 96.7159 12.5598 96.7923 12.4685L98.825 10.3068C98.825 10.3068 98.8403 10.2763 98.8862 10.2763C98.932 10.2763 99.1307 10.2763 99.1613 10.2763C99.1919 10.2763 99.2224 10.3068 99.2224 10.3068L103.318 15.7568C103.41 15.8786 103.548 15.9395 103.701 15.9395H108.301C108.545 15.9395 108.668 15.6807 108.53 15.5132Z"></path>
-              <path d="M41.2214 3.66928H45.8829C46.0816 3.66928 46.2497 3.50182 46.2497 3.30392V0.38099C46.2497 0.183083 46.0816 0.015625 45.8829 0.015625H36.2389C36.0402 0.015625 35.8721 0.183083 35.8721 0.38099V15.635C35.8721 15.8329 36.0402 16.0004 36.2389 16.0004H45.8829C46.0816 16.0004 46.2497 15.8329 46.2497 15.635V12.7121C46.2497 12.5142 46.0816 12.3467 45.8829 12.3467H41.1908C40.9921 12.3467 40.824 12.1793 40.824 11.9813V10.0784C40.824 9.86527 41.0074 9.68259 41.2214 9.68259H45.8829C46.0816 9.68259 46.2497 9.51513 46.2497 9.31723V6.45519C46.2497 6.25729 46.0816 6.08983 45.8829 6.08983H41.2214C41.0074 6.08983 40.824 5.90714 40.824 5.69401V4.04987C40.824 3.83674 41.0074 3.66928 41.2214 3.66928Z"></path>
-              <path d="M53.7546 3.66928H58.4161C58.6148 3.66928 58.7829 3.50182 58.7829 3.30392V0.38099C58.7829 0.183083 58.6148 0.015625 58.4161 0.015625H48.7721C48.5734 0.015625 48.4053 0.183083 48.4053 0.38099V15.635C48.4053 15.8329 48.5734 16.0004 48.7721 16.0004H58.4161C58.6148 16.0004 58.7829 15.8329 58.7829 15.635V12.7121C58.7829 12.5142 58.6148 12.3467 58.4161 12.3467H53.724C53.5253 12.3467 53.3572 12.1793 53.3572 11.9813V10.0784C53.3572 9.86527 53.5406 9.68259 53.7546 9.68259H58.4161C58.6148 9.68259 58.7829 9.51513 58.7829 9.31723V6.45519C58.7829 6.25729 58.6148 6.08983 58.4161 6.08983H53.7546C53.5406 6.08983 53.3572 5.90714 53.3572 5.69401V4.04987C53.3572 3.83674 53.5406 3.66928 53.7546 3.66928Z"></path>
-              <path d="M5.35124 3.66928H10.0128C10.2115 3.66928 10.3796 3.50182 10.3796 3.30392V0.38099C10.3796 0.183083 10.2115 0.015625 10.0128 0.015625H0.368765C0.170077 0.015625 0.00195312 0.183083 0.00195312 0.38099V15.635C0.00195312 15.8329 0.170077 16.0004 0.368765 16.0004H4.58706C4.78575 16.0004 4.95387 15.8329 4.95387 15.635V10.0936C4.95387 9.88049 5.13727 9.69781 5.35124 9.69781H10.0128C10.2115 9.69781 10.3796 9.53035 10.3796 9.33245V6.47042C10.3796 6.27251 10.2115 6.10505 10.0128 6.10505H5.35124C5.13727 6.10505 4.95387 5.92237 4.95387 5.70924V4.06509C4.95387 3.83674 5.12199 3.66928 5.35124 3.66928Z"></path>
-              <path d="M75.7474 0.015625H61.3043C61.1056 0.015625 60.9375 0.183083 60.9375 0.38099V15.635C60.9375 15.8329 61.1056 16.0004 61.3043 16.0004H66.0728C66.2715 16.0004 66.4396 15.8329 66.4396 15.635V10.596C66.4396 10.4894 66.516 10.4133 66.623 10.4133H67.3108H75.7627C79.4307 10.4133 82.2124 8.51037 82.2124 5.14596C82.2124 1.65977 79.4308 0.015625 75.7474 0.015625ZM75.0596 6.82056H66.8064C66.6077 6.82056 66.4396 6.6531 66.4396 6.45519V4.14121C66.4396 3.94331 66.6077 3.77584 66.8064 3.77584H74.9374C76.0989 3.77584 76.8631 4.33912 76.8631 5.25253C76.8631 6.28773 76.1448 6.82056 75.0596 6.82056Z"></path>
-            </svg>
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <svg aria-label="Krea Logo" role="img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain" style={{ color: 'currentColor' }}>
-              <path d="M8.34057 1.26646C10.1061 1.14218 11.6638 2.37142 11.8911 4.06824C12.1069 5.68015 11.0037 7.23915 9.34608 7.60419C8.93062 7.69566 8.46886 7.67023 8.02919 7.72601C6.95925 7.86191 6.04308 8.30843 5.2807 9.06558L5.27279 9.06966L5.26385 9.0689L5.2568 9.06354L5.25394 9.05533C5.25366 9.04931 5.25521 9.04398 5.25861 9.03933C5.26343 9.03249 5.26583 9.02497 5.26583 9.01677C5.25535 7.76661 5.2521 6.253 5.25606 4.47593C5.25946 2.79675 6.58613 1.38951 8.34057 1.26646Z" fill="currentColor"></path>
-              <path d="M8.5264 15.3045C6.27918 15.2869 4.66832 13.0758 5.44996 11.0041C5.88114 9.86055 6.9457 9.0267 8.20737 8.89545C8.59097 8.85566 9.05188 8.86591 9.42189 8.79701C11.322 8.44386 12.7897 6.99068 13.0867 5.14047C13.1525 4.7299 13.1181 4.24058 13.215 3.805C13.6636 1.78908 15.9736 0.657869 17.9137 1.56924C18.9252 2.04502 19.6032 2.94326 19.771 4.01623C19.8055 4.23634 19.8167 4.50896 19.8045 4.83408C19.5845 10.6755 14.5956 15.3529 8.5264 15.3045Z" fill="currentColor"></path>
-              <path d="M11.3567 16.2337C11.3465 16.229 11.3396 16.2222 11.3359 16.2132C11.3352 16.2114 11.3349 16.2094 11.335 16.2075C11.3351 16.2056 11.3356 16.2037 11.3366 16.202C11.3375 16.2003 11.3388 16.1988 11.3403 16.1976C11.3419 16.1964 11.3437 16.1956 11.3457 16.1951C13.6512 15.6674 15.6487 14.6058 17.338 13.0102C17.3683 12.9815 17.3959 12.9837 17.4208 13.0168C17.6918 13.3736 17.9748 13.7571 18.2016 14.1234C19.1336 15.6279 19.6617 17.2574 19.7857 19.0121C19.8106 19.3659 19.8184 19.6392 19.8091 19.832C19.7254 21.537 18.2985 22.9126 16.4998 22.9229C14.9072 22.9315 13.5071 21.845 13.2046 20.325C13.1333 19.9653 13.1553 19.4669 13.0946 19.0867C12.9071 17.9169 12.3355 16.9702 11.3797 16.2464C11.3754 16.2428 11.3678 16.2386 11.3567 16.2337Z" fill="currentColor"></path>
-              <path d="M7.98752 22.874C6.63495 22.6386 5.5466 21.5882 5.30446 20.2814C5.27132 20.1026 5.25476 19.8301 5.25476 19.464C5.25447 18.0227 5.25419 16.5813 5.25391 15.1397C5.25391 15.1255 5.25929 15.1232 5.27005 15.1327C6.15449 15.919 7.08397 16.3993 8.29806 16.4793C8.29919 16.4795 8.40794 16.4831 8.62431 16.4899C10.205 16.5404 11.544 17.5764 11.8528 19.0813C12.3099 21.3064 10.2955 23.2756 7.98752 22.874Z" fill="currentColor"></path>
-            </svg>
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <img src={lovableLogo} alt="Lovable" className="w-full h-full object-contain" />
-          </div>
-          <div className="flex items-center justify-center aspect-square rounded-lg overflow-hidden w-32">
-            <img src={v0Logo} alt="v0" className="w-full h-full object-contain" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-          <div>
-            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.generativeModel.heading}</h3>
-            {content.ai.generativeModel.paragraphs.map((paragraph, index) => (
-              <p key={index} className={`text-muted-foreground ${index < content.ai.generativeModel.paragraphs.length - 1 ? 'mb-4' : ''}`}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-
-        {/* Claude Code Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-          <div className="flex items-center justify-center">
-            <img src={claudeCodeImage} alt="Claude Code" className="w-full h-auto rounded-lg object-contain max-h-96" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.claudeCode.heading}</h3>
-            <p className="text-muted-foreground">
-              {content.ai.claudeCode.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Ralph Wiggum Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-          <div className="flex items-center justify-center">
-            <img src={ralphImage} alt="Ralph Wiggum" className="w-full h-auto rounded-lg object-contain max-h-[48rem]" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.ralphWiggum.heading}</h3>
-            <p className="text-muted-foreground mb-4">
-              {content.ai.ralphWiggum.description}
-            </p>
-            <ul className="space-y-2 text-muted-foreground">
-              {content.ai.ralphWiggum.guidelines.map((guideline, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="text-foreground mt-1.5">•</span>
-                  <span>{guideline}</span>
-                </li>
-              ))}
+            <ul className="space-y-4 text-sm text-muted-foreground">
+                {content.responsibility.summary.map((item, idx) => {
+                  const [role, ...descriptionParts] = item.split(':');
+                  const description = descriptionParts.join(':');
+                  return (
+                    <li key={idx}>
+                      <span className="text-foreground font-medium">{role}:</span> {description}
+                    </li>
+                  );
+                })}
             </ul>
           </div>
-        </div>
-
-        {/* Gemini Granny Section */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-foreground mb-6">{content.ai.geminiGranny.heading}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border border-border rounded-lg p-6 bg-muted/10">
-              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.setup.title}</h4>
-              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.setup.description}</p>
+          <div className="lg:col-span-2">
+              <MatrixTable
+              columns={[
+                { key: "task", header: "Task/Project" },
+                { key: "lead", header: "Pipeline Lead/TD" },
+                { key: "dev", header: "Pipeline Developer" },
+                { key: "junior", header: "Junior Engineer" },
+                { key: "it", header: "IT Specialist" },
+              ]}
+              data={responsibilityData}
+                variant="dark"
+                showVerticalBorders={true}
+                cellHover={true}
+            />
             </div>
-            <div className="border border-border rounded-lg p-6 bg-muted/10">
-              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.cost.title}</h4>
-              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.cost.description}</p>
-            </div>
-            <div className="border border-border rounded-lg p-6 bg-muted/10">
-              <h4 className="text-lg font-semibold text-foreground mb-2">{content.ai.geminiGranny.function.title}</h4>
-              <p className="text-sm text-muted-foreground">{content.ai.geminiGranny.function.description}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Real-World Example Section */}
-        <div className="mb-12 border border-border rounded-lg p-8 bg-muted/10">
-          <h3 className="text-2xl font-semibold text-foreground mb-4">{content.ai.realWorldExample.heading}</h3>
-          <p className="text-lg text-foreground mb-6 font-medium">{content.ai.realWorldExample.task}</p>
-          <div className="space-y-3 text-muted-foreground">
-            <p>{content.ai.realWorldExample.results.ralph}</p>
-            <p>{content.ai.realWorldExample.results.granny}</p>
-            <p className="text-foreground font-semibold">{content.ai.realWorldExample.results.total}</p>
-            <p className="text-sm italic">{content.ai.realWorldExample.results.comparison}</p>
           </div>
         </div>
       </SlideSection>
